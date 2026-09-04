@@ -1,0 +1,10 @@
+[
+  { "id": "salary", "label": "Salary", "icon": "💰", "bg": "bg-emerald-100", "fg": "text-emerald-700", "bar": "bg-emerald-500" },
+  { "id": "freelance", "label": "Freelance", "icon": "💻", "bg": "bg-teal-100", "fg": "text-teal-700", "bar": "bg-teal-500" },
+  { "id": "food", "label": "Food", "icon": "🍔", "bg": "bg-amber-100", "fg": "text-amber-700", "bar": "bg-amber-500" },
+  { "id": "travel", "label": "Travel", "icon": "🚕", "bg": "bg-sky-100", "fg": "text-sky-700", "bar": "bg-sky-500" },
+  { "id": "bills", "label": "Bills", "icon": "🧾", "bg": "bg-indigo-100", "fg": "text-indigo-700", "bar": "bg-indigo-500" },
+  { "id": "shopping", "label": "Shopping", "icon": "🛍️", "bg": "bg-pink-100", "fg": "text-pink-700", "bar": "bg-pink-500" },
+  { "id": "health", "label": "Health", "icon": "🩺", "bg": "bg-rose-100", "fg": "text-rose-700", "bar": "bg-rose-500" },
+  { "id": "entertainment", "label": "Entertainment", "icon": "🎬", "bg": "bg-violet-100", "fg": "text-violet-700", "bar": "bg-violet-500" }
+]

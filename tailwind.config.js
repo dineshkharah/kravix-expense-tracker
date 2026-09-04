@@ -4,7 +4,8 @@ const percentWidths = Object.fromEntries(
 );
 
 module.exports = {
-  content: ["./App.js", "./index.js", "./src/**/*.{js,jsx}"],
+  // The data folder is scanned too, because categories.json stores tailwind class names as values and tailwind only compiles classes it can find in source text.
+  content: ["./App.js", "./index.js", "./src/**/*.{js,jsx}", "./data/**/*.{js,json}"],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {

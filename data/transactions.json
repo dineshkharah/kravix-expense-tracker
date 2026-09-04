@@ -1,0 +1,17 @@
+[
+  { "id": "t1", "title": "Monthly Salary", "category": "Salary", "amount": 85000, "type": "income", "date": "2026-09-01", "wallet": "HDFC", "note": "August payroll" },
+  { "id": "t2", "title": "Apartment Rent", "category": "Bills", "amount": 22000, "type": "expense", "date": "2026-09-01", "wallet": "HDFC", "note": "" },
+  { "id": "t3", "title": "Weekly Grocery Run", "category": "Food", "amount": 4820, "type": "expense", "date": "2026-09-03", "wallet": "Cash", "note": "Vegetables and staples" },
+  { "id": "t4", "title": "Metro Card Top Up", "category": "Travel", "amount": 500, "type": "expense", "date": "2026-09-03", "wallet": "Cash", "note": "" },
+  { "id": "t5", "title": "Freelance Landing Page", "category": "Freelance", "amount": 12000, "type": "income", "date": "2026-09-02", "wallet": "ICICI", "note": "Invoice 14" },
+  { "id": "t6", "title": "Quarterly home broadband, router rental and premium OTT bundle renewal charges", "category": "Bills", "amount": 3499, "type": "expense", "date": "2026-09-02", "wallet": "HDFC", "note": "Long title, truncation test" },
+  { "id": "t7", "title": "Coffee with Aditi", "category": "Food", "amount": 380, "type": "expense", "date": "2026-08-31", "wallet": "Cash", "note": "" },
+  { "id": "t8", "title": "Running Shoes", "category": "Shopping", "amount": 6499, "type": "expense", "date": "2026-08-30", "wallet": "ICICI", "note": "" },
+  { "id": "t9", "title": "Cab to Airport", "category": "Travel", "amount": 1240, "type": "expense", "date": "2026-08-29", "wallet": "HDFC", "note": "" },
+  { "id": "t10", "title": "Dentist Appointment", "category": "Health", "amount": 2800, "type": "expense", "date": "2026-08-28", "wallet": "Cash", "note": "" },
+  { "id": "t11", "title": "Concert Tickets", "category": "Entertainment", "amount": 3200, "type": "expense", "date": "2026-08-27", "wallet": "ICICI", "note": "Two tickets" },
+  { "id": "t12", "title": "Electricity Bill", "category": "Bills", "amount": 1875, "type": "expense", "date": "2026-08-26", "wallet": "HDFC", "note": "" },
+  { "id": "t13", "title": "Dinner Delivery", "category": "Food", "amount": 720, "type": "expense", "date": "2026-08-25", "wallet": "Cash", "note": "" },
+  { "id": "t14", "title": "Pharmacy", "category": "Health", "amount": 640, "type": "expense", "date": "2026-08-24", "wallet": "Cash", "note": "" },
+  { "id": "t15", "title": "Train Booking", "category": "Travel", "amount": 1580, "type": "expense", "date": "2026-08-23", "wallet": "ICICI", "note": "Weekend trip" }
+]
