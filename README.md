@@ -20,11 +20,11 @@ This is a UI only app. There is no backend and no network calls of any kind. All
 
 | Dashboard | All Transactions | Add Transaction |
 |---|---|---|
-| ![Dashboard](screenshots/dashboard.png) | ![All Transactions](screenshots/transactions.png) | ![Add Transaction](screenshots/add.png) |
+| ![Dashboard](screenshots/dashboard.jpg) | ![All Transactions](screenshots/transactions.jpg) | ![Add Transaction](screenshots/add.jpg) |
 
-| Category Summary | Validation | Empty state |
+| Category Summary | Inline validation | Empty state |
 |---|---|---|
-| ![Category Summary](screenshots/summary.png) | ![Validation](screenshots/validation.png) | ![Empty state](screenshots/empty.png) |
+| ![Category Summary](screenshots/summary.jpg) | ![Inline validation](screenshots/validation.jpg) | ![Empty state](screenshots/empty.jpg) |
 
 ## Running it
 
