@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
+import DatePickerField from "../components/DatePickerField";
 import FormField from "../components/FormField";
 import { categories } from "../../data";
 import { useTransactions } from "../context/TransactionsContext";
@@ -244,15 +245,13 @@ export default function AddTransactionScreen() {
           </FormField>
 
           <FormField label="Date" error={errors.date}>
-            <TextInput
+            <DatePickerField
               value={date}
-              onChangeText={(text) => {
+              hasError={Boolean(errors.date)}
+              onChange={(next) => {
                 clearError("date");
-                setDate(text);
+                setDate(next);
               }}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor={PLACEHOLDER_COLOR}
-              className={inputClasses(errors.date)}
             />
           </FormField>
 
