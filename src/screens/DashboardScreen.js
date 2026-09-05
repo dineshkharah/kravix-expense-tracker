@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import Card from "../components/Card";
 import EmptyState from "../components/EmptyState";
 import ErrorState from "../components/ErrorState";
+import ScreenHeader from "../components/ScreenHeader";
 import Skeleton from "../components/Skeleton";
 import TransactionCard from "../components/TransactionCard";
 import { useTransactions } from "../context/TransactionsContext";
@@ -140,10 +141,7 @@ export default function DashboardScreen() {
     <SafeAreaView className="flex-1 bg-gray-50" edges={["top"]}>
       {/* Padding at the bottom of the content, not on the ScrollView itself, so the floating button never covers the last row. */}
       <ScrollView contentContainerClassName="pb-28" showsVerticalScrollIndicator={false}>
-        <View className="px-4 pt-2">
-          <Text className="text-2xl font-bold text-gray-900">Dashboard</Text>
-          <Text className="mt-1 text-sm text-gray-500">Your money at a glance</Text>
-        </View>
+        <ScreenHeader title="Dashboard" subtitle="Your money at a glance" />
 
         {renderBody()}
       </ScrollView>

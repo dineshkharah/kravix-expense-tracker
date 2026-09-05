@@ -2,9 +2,11 @@ import { useMemo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import CategoryBadge from "../components/CategoryBadge";
 import EmptyState from "../components/EmptyState";
 import ErrorState from "../components/ErrorState";
 import ProgressBar from "../components/ProgressBar";
+import ScreenHeader from "../components/ScreenHeader";
 import Skeleton from "../components/Skeleton";
 import { useTransactions } from "../context/TransactionsContext";
 import { getCategory } from "../../data";
@@ -42,22 +44,21 @@ export default function SummaryScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-50" edges={["top"]}>
       <ScrollView contentContainerClassName="pb-8" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-start justify-between px-4 pb-3 pt-2">
-          <View className="flex-1">
-            <Text className="text-2xl font-bold text-gray-900">Category Summary</Text>
-            <Text className="mt-1 text-sm text-gray-500">Where your money went</Text>
-          </View>
-
-          {/* Lets the empty states actually be reached on a device, since the sample data is otherwise always present. */}
-          <Pressable
-            onPress={isEmpty ? restoreSampleData : clearAll}
-            className="rounded-full border border-gray-200 bg-white px-3 py-2 active:opacity-70"
-          >
-            <Text className="text-xs font-semibold text-gray-700">
-              {isEmpty ? "Restore" : "Clear all"}
-            </Text>
-          </Pressable>
-        </View>
+        <ScreenHeader
+          title="Category Summary"
+          subtitle="Where your money went"
+          action={
+            /* Lets the empty states actually be reached on a device, since the sample data is otherwise always present. */
+            <Pressable
+              onPress={isEmpty ? restoreSampleData : clearAll}
+              className="rounded-full border border-gray-200 bg-white px-3 py-2 active:opacity-70"
+            >
+              <Text className="text-xs font-semibold text-gray-700">
+                {isEmpty ? "Restore" : "Clear all"}
+              </Text>
+            </Pressable>
+          }
+        />
 
         {loadError ? (
           <ErrorState
@@ -103,18 +104,8 @@ function SummaryBody({ rows, total }) {
 
               return (
                 <View key={row.name} className={index === 0 ? "" : "mt-5"}>
-                  <View className="mb-2 flex-row items-center gap-2">
-                    <View
-                      className={
-                        "h-8 w-8 items-center justify-center rounded-full " + info.bg
-                      }
-                    >
-                      <Text className="text-sm">{info.icon}</Text>
-                    </View>
-
-                    <Text className="flex-1 text-sm font-semibold text-gray-900">
-                      {info.label}
-                    </Text>
+                  <View className="mb-2 flex-row items-center justify-between">
+                    <CategoryBadge category={row.name} />
 
                     <Text className="text-sm font-bold text-gray-900">
                       {formatCurrency(row.amount)}

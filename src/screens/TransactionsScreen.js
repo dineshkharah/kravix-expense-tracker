@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import EmptyState from "../components/EmptyState";
 import ErrorState from "../components/ErrorState";
+import ScreenHeader from "../components/ScreenHeader";
 import Skeleton from "../components/Skeleton";
 import TransactionCard from "../components/TransactionCard";
 import { useTransactions } from "../context/TransactionsContext";
@@ -49,9 +50,7 @@ export default function TransactionsScreen() {
   if (loadError) {
     return (
       <SafeAreaView className="flex-1 bg-gray-50" edges={["top"]}>
-        <View className="px-4 pb-3 pt-2">
-          <Text className="text-2xl font-bold text-gray-900">All Transactions</Text>
-        </View>
+        <ScreenHeader title="All Transactions" />
         <ErrorState
           message={loadError}
           actionLabel="Load the sample data"
@@ -63,17 +62,17 @@ export default function TransactionsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50" edges={["top"]}>
-      <View className="px-4 pb-3 pt-2">
-        <Text className="text-2xl font-bold text-gray-900">All Transactions</Text>
-        <Text className="mt-1 text-sm text-gray-500">
-          {isLoading
+      <ScreenHeader
+        title="All Transactions"
+        subtitle={
+          isLoading
             ? "Loading"
             : filtered.length +
               " " +
               (filtered.length === 1 ? "entry" : "entries") +
-              (selected === ALL ? "" : " in " + selected)}
-        </Text>
-      </View>
+              (selected === ALL ? "" : " in " + selected)
+        }
+      />
 
       {/* grow-0 keeps this row at its natural height instead of stretching to fill the column. */}
       <ScrollView

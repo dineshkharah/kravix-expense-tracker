@@ -167,7 +167,8 @@ export default function AddTransactionScreen() {
                   key={option.value}
                   onPress={() => setType(option.value)}
                   className={
-                    "flex-1 items-center rounded-lg py-2.5 " + (isActive ? "bg-white" : "")
+                    "flex-1 items-center rounded-lg py-2.5 active:opacity-70 " +
+                    (isActive ? "bg-white" : "")
                   }
                 >
                   <Text
