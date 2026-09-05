@@ -3,12 +3,17 @@ import { Text, View } from "react-native";
 import { getCategory } from "../../data";
 import { formatCurrency, formatDate } from "../utils/format";
 
-export default function TransactionCard({ transaction }) {
+export default function TransactionCard({ transaction, isLast = false }) {
   const info = getCategory(transaction.category);
   const isIncome = transaction.type === "income";
 
   return (
-    <View className="flex-row items-center gap-3 border-b border-gray-100 bg-white px-4 py-3">
+    <View
+      className={
+        "flex-row items-center gap-3 bg-white px-4 py-3 " +
+        (isLast ? "" : "border-b border-gray-100")
+      }
+    >
       <View className={"h-10 w-10 items-center justify-center rounded-full " + info.bg}>
         <Text className="text-base">{info.icon}</Text>
       </View>
