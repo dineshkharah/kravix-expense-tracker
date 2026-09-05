@@ -1,15 +1,20 @@
 import { useMemo } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import EmptyState from "../components/EmptyState";
+import ErrorState from "../components/ErrorState";
 import ProgressBar from "../components/ProgressBar";
+import Skeleton from "../components/Skeleton";
 import { useTransactions } from "../context/TransactionsContext";
 import { getCategory } from "../../data";
 import { formatCurrency } from "../utils/format";
 
 export default function SummaryScreen() {
-  const { transactions } = useTransactions();
+  const { transactions, isLoading, loadError, clearAll, restoreSampleData } =
+    useTransactions();
+
+  const isEmpty = transactions.length === 0;
 
   const { rows, total } = useMemo(() => {
     const sums = {};
@@ -37,12 +42,46 @@ export default function SummaryScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-50" edges={["top"]}>
       <ScrollView contentContainerClassName="pb-8" showsVerticalScrollIndicator={false}>
-        <View className="px-4 pb-3 pt-2">
-          <Text className="text-2xl font-bold text-gray-900">Category Summary</Text>
-          <Text className="mt-1 text-sm text-gray-500">Where your money went</Text>
+        <View className="flex-row items-start justify-between px-4 pb-3 pt-2">
+          <View className="flex-1">
+            <Text className="text-2xl font-bold text-gray-900">Category Summary</Text>
+            <Text className="mt-1 text-sm text-gray-500">Where your money went</Text>
+          </View>
+
+          {/* Lets the empty states actually be reached on a device, since the sample data is otherwise always present. */}
+          <Pressable
+            onPress={isEmpty ? restoreSampleData : clearAll}
+            className="rounded-full border border-gray-200 bg-white px-3 py-2 active:opacity-70"
+          >
+            <Text className="text-xs font-semibold text-gray-700">
+              {isEmpty ? "Restore" : "Clear all"}
+            </Text>
+          </Pressable>
         </View>
 
-        <View className="mx-4 rounded-2xl bg-gray-900 p-5">
+        {loadError ? (
+          <ErrorState
+            message={loadError}
+            actionLabel="Load the sample data"
+            onAction={restoreSampleData}
+          />
+        ) : isLoading ? (
+          <View className="px-4">
+            <Skeleton className="h-28 w-full" />
+            <Skeleton className="mt-3 h-72 w-full" />
+          </View>
+        ) : (
+          <SummaryBody rows={rows} total={total} />
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+function SummaryBody({ rows, total }) {
+  return (
+    <View>
+      <View className="mx-4 rounded-2xl bg-gray-900 p-5">
           <Text className="text-sm font-medium text-gray-400">Total spent</Text>
           <Text className="mt-1 text-3xl font-bold text-white">{formatCurrency(total)}</Text>
           <Text className="mt-2 text-xs text-gray-400">
@@ -92,7 +131,6 @@ export default function SummaryScreen() {
             })}
           </View>
         )}
-      </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

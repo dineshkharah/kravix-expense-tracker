@@ -1,8 +1,19 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import { transactions as mockTransactions } from "../../data";
 
 const TransactionsContext = createContext(null);
+
+// If the data file is ever malformed, the app shows an error state instead of crashing on a missing method.
+const dataIsUsable = Array.isArray(mockTransactions);
+const startingItems = dataIsUsable ? mockTransactions : [];
 
 let addedCount = 0;
 
@@ -12,7 +23,14 @@ function makeId() {
 }
 
 export function TransactionsProvider({ children }) {
-  const [items, setItems] = useState(mockTransactions);
+  const [items, setItems] = useState(startingItems);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // The data is already in memory, so this short wait only exists to show the loading state. It is not a network call.
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const addTransaction = useCallback((transaction) => {
     setItems((current) => [{ ...transaction, id: makeId() }, ...current]);
@@ -20,7 +38,7 @@ export function TransactionsProvider({ children }) {
 
   const clearAll = useCallback(() => setItems([]), []);
 
-  const restoreSampleData = useCallback(() => setItems(mockTransactions), []);
+  const restoreSampleData = useCallback(() => setItems(startingItems), []);
 
   // Sorted here rather than in each screen, so every list shows the newest first without repeating the same sort.
   const sorted = useMemo(
@@ -31,11 +49,13 @@ export function TransactionsProvider({ children }) {
   const value = useMemo(
     () => ({
       transactions: sorted,
+      isLoading,
+      loadError: dataIsUsable ? null : "We could not read the transaction data.",
       addTransaction,
       clearAll,
       restoreSampleData,
     }),
-    [sorted, addTransaction, clearAll, restoreSampleData],
+    [sorted, isLoading, addTransaction, clearAll, restoreSampleData],
   );
 
   return (

@@ -5,13 +5,92 @@ import { useNavigation } from "@react-navigation/native";
 
 import Card from "../components/Card";
 import EmptyState from "../components/EmptyState";
+import ErrorState from "../components/ErrorState";
+import Skeleton from "../components/Skeleton";
 import TransactionCard from "../components/TransactionCard";
 import { useTransactions } from "../context/TransactionsContext";
 import { formatCurrency } from "../utils/format";
 
+function LoadingBody() {
+  return (
+    <View className="px-4">
+      <Skeleton className="mt-4 h-28 w-full" />
+      <View className="mt-3 flex-row gap-3">
+        <Skeleton className="h-24 flex-1" />
+        <Skeleton className="h-24 flex-1" />
+      </View>
+      <Skeleton className="mt-6 h-5 w-40" />
+      <Skeleton className="mt-3 h-64 w-full" />
+    </View>
+  );
+}
+
+function DashboardBody({ totals, recent, count, onViewAll }) {
+  return (
+    <View>
+      <View className="mx-4 mt-4 rounded-2xl bg-blue-600 p-5">
+        <Text className="text-sm font-medium text-blue-100">Total balance</Text>
+        <Text className="mt-1 text-3xl font-bold text-white">
+          {formatCurrency(totals.balance)}
+        </Text>
+        <Text className="mt-2 text-xs text-blue-100">
+          Across {count} transaction{count === 1 ? "" : "s"}
+        </Text>
+      </View>
+
+      <View className="mx-4 mt-3 flex-row gap-3">
+        <Card className="flex-1">
+          <View className="h-8 w-8 items-center justify-center rounded-full bg-emerald-100">
+            <Text className="text-sm">↑</Text>
+          </View>
+          <Text className="mt-2 text-xs text-gray-500">Income</Text>
+          <Text className="mt-0.5 text-base font-bold text-emerald-600">
+            {formatCurrency(totals.income)}
+          </Text>
+        </Card>
+
+        <Card className="flex-1">
+          <View className="h-8 w-8 items-center justify-center rounded-full bg-rose-100">
+            <Text className="text-sm">↓</Text>
+          </View>
+          <Text className="mt-2 text-xs text-gray-500">Expenses</Text>
+          <Text className="mt-0.5 text-base font-bold text-rose-600">
+            {formatCurrency(totals.expenses)}
+          </Text>
+        </Card>
+      </View>
+
+      <View className="mx-4 mb-2 mt-6 flex-row items-center justify-between">
+        <Text className="text-base font-bold text-gray-900">Recent transactions</Text>
+        <Pressable onPress={onViewAll} className="active:opacity-70">
+          <Text className="text-sm font-semibold text-blue-600">View all</Text>
+        </Pressable>
+      </View>
+
+      <View className="mx-4 overflow-hidden rounded-2xl border border-gray-100 bg-white">
+        {recent.length === 0 ? (
+          <EmptyState
+            icon="🧾"
+            title="Nothing here yet"
+            message="Add your first transaction and it will show up here."
+          />
+        ) : (
+          recent.map((transaction, index) => (
+            <TransactionCard
+              key={transaction.id}
+              transaction={transaction}
+              isLast={index === recent.length - 1}
+            />
+          ))
+        )}
+      </View>
+    </View>
+  );
+}
+
 export default function DashboardScreen() {
   const navigation = useNavigation();
-  const { transactions } = useTransactions();
+  const { transactions, isLoading, loadError, restoreSampleData } = useTransactions();
 
   const totals = useMemo(() => {
     let income = 0;
@@ -32,6 +111,31 @@ export default function DashboardScreen() {
 
   const recent = transactions.slice(0, 5);
 
+  function renderBody() {
+    if (loadError) {
+      return (
+        <ErrorState
+          message={loadError}
+          actionLabel="Load the sample data"
+          onAction={restoreSampleData}
+        />
+      );
+    }
+
+    if (isLoading) {
+      return <LoadingBody />;
+    }
+
+    return (
+      <DashboardBody
+        totals={totals}
+        recent={recent}
+        count={transactions.length}
+        onViewAll={() => navigation.navigate("Transactions")}
+      />
+    );
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-gray-50" edges={["top"]}>
       {/* Padding at the bottom of the content, not on the ScrollView itself, so the floating button never covers the last row. */}
@@ -41,65 +145,7 @@ export default function DashboardScreen() {
           <Text className="mt-1 text-sm text-gray-500">Your money at a glance</Text>
         </View>
 
-        <View className="mx-4 mt-4 rounded-2xl bg-blue-600 p-5">
-          <Text className="text-sm font-medium text-blue-100">Total balance</Text>
-          <Text className="mt-1 text-3xl font-bold text-white">
-            {formatCurrency(totals.balance)}
-          </Text>
-          <Text className="mt-2 text-xs text-blue-100">
-            Across {transactions.length} transaction{transactions.length === 1 ? "" : "s"}
-          </Text>
-        </View>
-
-        <View className="mx-4 mt-3 flex-row gap-3">
-          <Card className="flex-1">
-            <View className="h-8 w-8 items-center justify-center rounded-full bg-emerald-100">
-              <Text className="text-sm">↑</Text>
-            </View>
-            <Text className="mt-2 text-xs text-gray-500">Income</Text>
-            <Text className="mt-0.5 text-base font-bold text-emerald-600">
-              {formatCurrency(totals.income)}
-            </Text>
-          </Card>
-
-          <Card className="flex-1">
-            <View className="h-8 w-8 items-center justify-center rounded-full bg-rose-100">
-              <Text className="text-sm">↓</Text>
-            </View>
-            <Text className="mt-2 text-xs text-gray-500">Expenses</Text>
-            <Text className="mt-0.5 text-base font-bold text-rose-600">
-              {formatCurrency(totals.expenses)}
-            </Text>
-          </Card>
-        </View>
-
-        <View className="mx-4 mb-2 mt-6 flex-row items-center justify-between">
-          <Text className="text-base font-bold text-gray-900">Recent transactions</Text>
-          <Pressable
-            onPress={() => navigation.navigate("Transactions")}
-            className="active:opacity-70"
-          >
-            <Text className="text-sm font-semibold text-blue-600">View all</Text>
-          </Pressable>
-        </View>
-
-        <View className="mx-4 overflow-hidden rounded-2xl border border-gray-100 bg-white">
-          {recent.length === 0 ? (
-            <EmptyState
-              icon="🧾"
-              title="Nothing here yet"
-              message="Add your first transaction and it will show up here."
-            />
-          ) : (
-            recent.map((transaction, index) => (
-              <TransactionCard
-                key={transaction.id}
-                transaction={transaction}
-                isLast={index === recent.length - 1}
-              />
-            ))
-          )}
-        </View>
+        {renderBody()}
       </ScrollView>
 
       <Pressable
